@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics=""><meta name="design_doc_mode" content="canvas"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&amp;family=Barlow:wght@400;500;600;700&amp;display=swap" rel="stylesheet"><script src="./image-slot.js"></script><style>body{margin:0;background:#0d0a1f;font-family:Barlow,system-ui,sans-serif;color:#f4f1ff}a{color:#ffd60a}a:hover{color:#fff}@keyframes maFall{0%{transform:translateY(-40px) rotate(0deg);opacity:1}100%{transform:translateY(560px) rotate(720deg);opacity:0}}@keyframes maPulse{0%,100%{opacity:.6}50%{opacity:1}}@keyframes maFlame{0%,100%{transform:scale(1) rotate(-3deg)}50%{transform:scale(1.12) rotate(3deg)}}@keyframes maZ{0%{opacity:0;transform:translate(0,4px)}50%{opacity:1}100%{opacity:0;transform:translate(6px,-8px)}}</style></helmet>
+
+<div style="padding:40px 44px 60px;display:flex;flex-direction:column;gap:28px">
+  <div style="max-width:980px;display:flex;flex-direction:column;gap:12px;font-size:13px;line-height:1.5;color:#b8b2d6">
+    <div style="grid-column:1/-1;display:flex;align-items:center;gap:14px"><span style="font-family:'Barlow Condensed';font-weight:800;font-size:38px;letter-spacing:.02em;color:#ffd60a;text-transform:uppercase;white-space:nowrap">Modo Aula</span><span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#3dd6f5;border:1px solid #3dd6f5;padding:3px 8px;border-radius:4px;white-space:nowrap">[ protótipo interativo · 390×844 ]</span></div>
+    <div><b style="color:#f4f1ff">Premissas.</b> Fluxo aluno → professor → pais em uma única jornada; turma 3B como contexto fixo. Aluna exemplo: Lívia. Créditos de foco = moeda única (pontos do dia alimentam o saldo).</div>
+    <div><b style="color:#f4f1ff">Decisões.</b> Coral reservado só a alertas; categorias do gráfico usam amarelo/ciano/laranja + lavanda (Neutro). Botões com sombra sólida "3D" e recuo ao toque. Mascote Tatú em 4 estados, sempre pequeno.</div>
+    <div><b style="color:#f4f1ff">Toque para testar.</b> Assinar o pacto, responder o quiz (5 perguntas, cronômetro real), resgatar na loja, iniciar sessão no painel. Tweaks: mascote, streak, meta coletiva.</div>
+  </div><div style="display:flex;flex-wrap:wrap;gap:36px;align-items:flex-start">
+
+    <!-- 1 ONBOARDING -->
+    <div style="display:flex;flex-direction:column;gap:10px" data-screen-label="01 Pacto">
+      <div style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#8b83b0">01 · onboarding — pacto de turma</div>
+      <div style="width:390px;height:844px;background:#14102b;border-radius:44px;overflow:hidden;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.6);border:1px solid #2a2350">
+        <div style="position:absolute;top:70px;left:-30px;width:180px;height:180px;border:2px solid #ffd60a;opacity:.14;border-radius:6px;transform:rotate(12deg)"></div>
+        <div style="position:absolute;top:120px;right:-40px;width:140px;height:220px;border:2px solid #ffd60a;opacity:.12"></div>
+        <div style="position:absolute;bottom:140px;left:-20px;width:110px;height:110px;border:2px solid #3dd6f5;opacity:.1;border-radius:50%"></div>
+        <div style="position:absolute;top:290px;left:30px;font-family:ui-monospace,Menlo,monospace;font-size:60px;color:#ffd60a;opacity:.12;line-height:1">[</div>
+        <div style="position:absolute;top:290px;right:30px;font-family:ui-monospace,Menlo,monospace;font-size:60px;color:#ffd60a;opacity:.12;line-height:1">]</div>
+        <div style="display:flex;justify-content:space-between;padding:18px 28px 0;font-size:14px;font-weight:600">
+          <span>9:41</span><span style="display:flex;gap:4px;align-items:center"><span style="width:16px;height:9px;border:1.5px solid #f4f1ff;border-radius:2px"></span></span>
+        </div>
+        <div style="position:relative;padding:36px 28px 0;display:flex;flex-direction:column;gap:18px;height:calc(100% - 40px);box-sizing:border-box">
+          <div style="display:flex;align-items:flex-end;justify-content:space-between">
+            <div>
+              <div style="font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#3dd6f5;letter-spacing:.08em;white-space:nowrap">TURMA 3B · COLÉGIO ESTADUAL</div>
+              <div style="font-family:'Barlow Condensed';font-weight:800;font-size:40px;line-height:.95;text-transform:uppercase;margin-top:8px">Acordo de<br>uso consciente</div>
+            </div>
+            <sc-if value="{{ showMascot }}" hint-placeholder-val="{{ true }}">
+<svg width="96" height="74" viewBox="0 0 130 100" aria-label="Tatú acenando">
+<ellipse cx="66" cy="94" rx="48" ry="5" fill="#000" opacity=".3"></ellipse>
+<path d="M24 74 Q8 80 12 92" stroke="#4a4166" stroke-width="6" stroke-linecap="round" fill="none"></path>
+<rect x="34" y="72" width="12" height="18" rx="5" fill="#4a4166"></rect><rect x="74" y="72" width="12" height="18" rx="5" fill="#4a4166"></rect>
+<ellipse cx="62" cy="66" rx="40" ry="20" fill="#5f5680"></ellipse>
+<path d="M22 70 C22 36 40 24 62 24 C86 24 102 38 102 70 Z" fill="#ffd60a"></path>
+<path d="M44 27 C40 40 38 56 38 70" stroke="#f5913d" stroke-width="5" stroke-linecap="round" fill="none"></path>
+<path d="M62 24 C61 40 60 56 60 70" stroke="#f5913d" stroke-width="5" stroke-linecap="round" fill="none"></path>
+<path d="M80 27 C83 40 84 56 84 70" stroke="#f5913d" stroke-width="5" stroke-linecap="round" fill="none"></path>
+<rect x="22" y="67" width="80" height="6" rx="3" fill="#f5913d"></rect>
+<ellipse cx="106" cy="56" rx="17" ry="13" fill="#4a4166"></ellipse>
+<ellipse cx="122" cy="61" rx="8" ry="5.5" fill="#4a4166"></ellipse><circle cx="128" cy="61" r="2" fill="#14102b"></circle>
+<ellipse cx="98" cy="42" rx="3.5" ry="7" fill="#4a4166" transform="rotate(-15 98 42)"></ellipse><ellipse cx="108" cy="41" rx="3.5" ry="7" fill="#4a4166" transform="rotate(10 108 41)"></ellipse>
+<circle cx="110" cy="54" r="4" fill="#fff"></circle><circle cx="111" cy="54.5" r="2" fill="#14102b"></circle>
+<path d="M105 48 L113 49" stroke="#14102b" stroke-width="1.5" stroke-linecap="round"></path>
+<path d="M116 64 Q119 67 122 65" stroke="#ffd60a" stroke-width="1.5" fill="none" stroke-linecap="round"></path>
+<path d="M92 62 Q88 46 84 34" stroke="#4a4166" stroke-width="6" stroke-linecap="round" fill="none"></path><circle cx="84" cy="32" r="5" fill="#4a4166"></circle>
+</svg>
+            </sc-if>
+          </div>
+          <div style="font-size:15px;color:#b8b2d6;line-height:1.45">Um combinado da turma, não uma regra de cima. Três compromissos, assinados juntos.</div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;gap:14px;align-items:center;background:#1f1a3d;border:1px solid #302868;border-radius:18px;padding:16px">
+              <div style="flex:none;width:44px;height:44px;border-radius:12px;background:#ffd60a;color:#14102b;font-family:'Barlow Condensed';font-weight:800;font-size:20px;display:grid;place-items:center">01</div>
+              <div><div style="font-weight:700;font-size:16px">Celular na aula só com convite</div><div style="font-size:13px;color:#b8b2d6;margin-top:2px">Ele entra quando o professor abre uma atividade.</div></div>
+            </div>
+            <div style="display:flex;gap:14px;align-items:center;background:#1f1a3d;border:1px solid #302868;border-radius:18px;padding:16px">
+              <div style="flex:none;width:44px;height:44px;border-radius:12px;background:#3dd6f5;color:#14102b;font-family:'Barlow Condensed';font-weight:800;font-size:20px;display:grid;place-items:center">02</div>
+              <div><div style="font-weight:700;font-size:16px">Silêncio durante o foco</div><div style="font-size:13px;color:#b8b2d6;margin-top:2px">Notificações pausam. Voltam no intervalo.</div></div>
+            </div>
+            <div style="display:flex;gap:14px;align-items:center;background:#1f1a3d;border:1px solid #302868;border-radius:18px;padding:16px">
+              <div style="flex:none;width:44px;height:44px;border-radius:12px;background:#f5913d;color:#14102b;font-family:'Barlow Condensed';font-weight:800;font-size:20px;display:grid;place-items:center">03</div>
+              <div><div style="font-weight:700;font-size:16px">Tempo, nunca conteúdo</div><div style="font-size:13px;color:#b8b2d6;margin-top:2px">Só categorias de uso são medidas. O que você vê é seu.</div></div>
+            </div>
+          </div>
+          <div style="margin-top:auto;padding-bottom:40px;display:flex;flex-direction:column;gap:14px;align-items:center">
+            <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:#b8b2d6">
+              <div style="display:flex"><div style="width:24px;height:24px;border-radius:50%;background:#3dd6f5;border:2px solid #14102b"></div><div style="width:24px;height:24px;border-radius:50%;background:#f5913d;border:2px solid #14102b;margin-left:-8px"></div><div style="width:24px;height:24px;border-radius:50%;background:#e8455a;border:2px solid #14102b;margin-left:-8px"></div></div>
+              <span>{{ signedCount }} de 32 colegas já assinaram</span>
+            </div>
+            <button onClick="{{ sign }}" style="width:100%;height:60px;border:0;border-radius:18px;background:{{ signBg }};color:#14102b;font-family:'Barlow Condensed';font-weight:800;font-size:22px;letter-spacing:.04em;text-transform:uppercase;box-shadow:0 6px 0 {{ signShadow }};cursor:pointer;transition:transform .08s" style-active="transform:translateY(5px);box-shadow:0 1px 0 #b39500">{{ signLabel }}</button>
+            <div style="font-size:12px;color:#8b83b0">Assinatura simbólica · você pode rever o pacto quando quiser</div>
+          </div>
+        </div>
+        {{ confettiPact }}
+      </div>
+    </div>
+
+    <!-- 2 HOME -->
+    <div style="display:flex;flex-direction:column;gap:10px" data-screen-label="02 Home">
+      <div style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#8b83b0">02 · home do aluno</div>
+      <div style="width:390px;height:844px;background:#14102b;border-radius:44px;overflow:hidden;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.6);border:1px solid #2a2350">
+        <div style="position:absolute;top:150px;right:-50px;width:200px;height:200px;border:2px solid #ffd60a;opacity:.1;border-radius:50%"></div>
+        <div style="position:absolute;top:110px;left:-30px;width:120px;height:260px;border:2px solid #ffd60a;opacity:.1;transform:rotate(-8deg)"></div>
+        <div style="display:flex;justify-content:space-between;padding:18px 28px 0;font-size:14px;font-weight:600"><span>9:41</span><span style="width:16px;height:9px;border:1.5px solid #f4f1ff;border-radius:2px;display:inline-block"></span></div><div style="position:relative;padding:20px 24px 0;display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:48px;height:48px;border-radius:50%;background:#3dd6f5;color:#14102b;display:grid;place-items:center;font-family:'Barlow Condensed';font-weight:800;font-size:20px;border:3px solid #ffd60a">LV</div>
+            <div style="flex:1"><div style="font-weight:700;font-size:18px">Lívia Andrade</div><div style="font-size:13px;color:#b8b2d6">Turma 3B · Manhã</div></div>
+            <div style="display:flex;align-items:center;gap:6px;background:#2a1a2e;border:1px solid #f5913d;border-radius:999px;padding:6px 12px 6px 8px">
+              <svg width="18" height="22" viewBox="0 0 18 22" style="animation:maFlame 1.4s ease-in-out infinite;transform-origin:50% 100%"><path d="M9 1 C10 6 15 8 15 14 A6 6 0 0 1 3 14 C3 10 6 9 6 6 C7 8 8 9 9 9 C9 6 8 4 9 1Z" fill="#f5913d"></path><path d="M9 11 C10 13 12 14 12 16.5 A3 3 0 0 1 6 16.5 C6 14.5 8 13.5 9 11Z" fill="#ffd60a"></path></svg>
+              <span style="font-family:'Barlow Condensed';font-weight:800;font-size:18px;color:#ffd60a;white-space:nowrap">{{ streakDays }} dias</span>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;padding:4px 0 0">
+            <div style="position:relative;width:196px;height:196px">
+              <svg width="196" height="196" viewBox="0 0 196 196" style="transform:rotate(-90deg)">
+                <circle cx="98" cy="98" r="84" fill="none" stroke="#221c45" stroke-width="16"></circle>
+                <circle cx="98" cy="98" r="84" fill="none" stroke="#ffd60a" stroke-width="16" stroke-linecap="round" stroke-dasharray="{{ ringDash }} 528" style="transition:stroke-dasharray .6s"></circle>
+              </svg>
+              <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+                <div style="font-family:'Barlow Condensed';font-weight:800;font-size:58px;line-height:1;color:#ffd60a">{{ points }}</div>
+                <div style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#b8b2d6;margin-top:2px">pontos hoje</div>
+                <div style="font-size:12px;color:#8b83b0;margin-top:4px">meta 300 · <b style="color:#3dd6f5">+50 CR</b></div>
+              </div>
+            </div>
+          </div>
+          <div style="background:#1f1a3d;border:1px solid #302868;border-radius:20px;padding:16px;display:flex;gap:16px;align-items:center">
+            <div style="flex:none;width:92px;height:92px;border-radius:50%;background:conic-gradient(#ffd60a 0 42%,#3dd6f5 42% 65%,#f5913d 65% 85%,#8b83b0 85% 100%);display:grid;place-items:center"><div style="width:56px;height:56px;border-radius:50%;background:#1f1a3d;display:grid;place-items:center;font-family:'Barlow Condensed';font-weight:700;font-size:16px">4h12</div></div><div style="flex:1;display:flex;flex-direction:column;font-size:12.5px"><div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #3a3260"><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="7" fill="#ffd60a"></circle><path d="M4 7.2 L6.2 9.4 L10.2 5" stroke="#14102b" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Educacional</span><b style="margin-left:auto">42%</b></div><div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #3a3260"><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="7" fill="#3dd6f5"></circle><path d="M4 7.2 L6.2 9.4 L10.2 5" stroke="#14102b" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Comunicação</span><b style="margin-left:auto">23%</b></div><div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #3a3260"><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="7" fill="#f5913d"></circle><path d="M4 7.2 L6.2 9.4 L10.2 5" stroke="#14102b" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Entretenimento</span><b style="margin-left:auto">20%</b></div><div style="display:flex;align-items:center;gap:8px;padding:6px 0"><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="7" fill="#8b83b0"></circle><path d="M4 7.2 L6.2 9.4 L10.2 5" stroke="#14102b" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Neutro</span><b style="margin-left:auto">15%</b></div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;justify-content:center;font-size:12px;color:#3dd6f5;font-family:ui-monospace,Menlo,monospace">
+            <svg width="14" height="16" viewBox="0 0 14 16"><rect x="1" y="7" width="12" height="8" rx="2" fill="none" stroke="#3dd6f5" stroke-width="1.5"></rect><path d="M4 7 V5 a3 3 0 0 1 6 0 V7" fill="none" stroke="#3dd6f5" stroke-width="1.5"></path></svg>
+            medimos categorias de tempo, nunca conteúdo
+          </div>
+          <div style="background:linear-gradient(135deg,#2a2160,#1f1a3d);border:1.5px solid #ffd60a;border-radius:20px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 0 0 4px rgba(255,214,10,.08)">
+            <div style="width:10px;height:10px;border-radius:50%;background:#ffd60a;animation:maPulse 1.2s infinite;flex:none"></div>
+            <div style="flex:1"><div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#ffd60a;font-weight:600">Sessão ativa</div><div style="font-size:14.5px;font-weight:600;margin-top:2px;line-height:1.3">Prof. Marcos abriu <b>Quiz de História</b> — entra em {{ clock }}</div></div>
+            <button style="flex:none;height:44px;padding:0 18px;border:0;border-radius:14px;background:#ffd60a;color:#14102b;font-family:'Barlow Condensed';font-weight:800;font-size:18px;text-transform:uppercase;box-shadow:0 4px 0 #b39500;cursor:pointer" style-active="transform:translateY(3px);box-shadow:0 1px 0 #b39500">Entrar</button>
+          </div>
+        </div>
+        
+        <div style="position:absolute;bottom:0;left:0;right:0;height:84px;background:#0f0c22;border-top:1px solid #2a2350;display:grid;grid-template-columns:repeat(4,1fr);padding:12px 12px 22px;font-size:11px;letter-spacing:.06em;text-transform:uppercase">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:5px;color:#ffd60a"><span style="width:22px;height:22px;border-radius:6px;background:#ffd60a"></span>Início</div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:5px;color:#8b83b0"><span style="width:22px;height:22px;border-radius:6px;border:2px solid #8b83b0;box-sizing:border-box"></span>Aula</div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:5px;color:#8b83b0"><span style="width:22px;height:22px;border-radius:50%;border:2px solid #8b83b0;box-sizing:border-box"></span>Loja</div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:5px;color:#8b83b0"><span style="width:22px;height:22px;border-radius:6px;border:2px solid #8b83b0;box-sizing:border-box;transform:rotate(45deg) scale(.8)"></span>Perfil</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2b NUDGE -->
+    <div style="display:flex;flex-direction:column;gap:10px" data-screen-label="02b Nudge">
+      <div style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#8b83b0">02b · nudge de distração (notificação)</div>
+      <div style="width:390px;background:#14102b;border-radius:28px;padding:18px;box-sizing:border-box;border:1px solid #2a2350;box-shadow:0 20px 50px rgba(0,0,0,.5)">
+        <div style="background:#1f1a3d;border:1px solid #f5913d;border-radius:22px;padding:16px;display:flex;gap:14px;align-items:center">
+          <sc-if value="{{ showMascot }}" hint-placeholder-val="{{ true }}">
+<svg width="72" height="66" viewBox="0 0 120 110" aria-label="Tatú sonolento">
+<ellipse cx="60" cy="102" rx="42" ry="5" fill="#000" opacity=".3"></ellipse>
+<path d="M22 84 Q12 90 18 98" stroke="#4a4166" stroke-width="5" stroke-linecap="round" fill="none"></path>
+<circle cx="60" cy="58" r="40" fill="#ffd60a"></circle>
+<path d="M36 30 C29 48 29 70 37 88" stroke="#f5913d" stroke-width="5" stroke-linecap="round" fill="none"></path>
+<path d="M60 18 C58 40 58 78 60 98" stroke="#f5913d" stroke-width="5" stroke-linecap="round" fill="none"></path>
+<path d="M84 30 C91 48 91 70 83 88" stroke="#f5913d" stroke-width="5" stroke-linecap="round" fill="none"></path>
+<ellipse cx="70" cy="88" rx="22" ry="11" fill="#4a4166"></ellipse>
+<ellipse cx="90" cy="92" rx="7" ry="4.5" fill="#4a4166"></ellipse><circle cx="95" cy="92" r="1.8" fill="#14102b"></circle>
+<circle cx="64" cy="86" r="3.5" fill="#fff"></circle><circle cx="65" cy="86.5" r="1.8" fill="#14102b"></circle><path d="M74 86 Q78 89 82 86" stroke="#14102b" stroke-width="2" fill="none" stroke-linecap="round"></path>
+<text x="96" y="34" font-family="Barlow Condensed" font-weight="800" font-size="14" fill="#3dd6f5" style="animation:maZ 2s infinite">z</text>
+</svg>
+          </sc-if>
+          <div style="flex:1">
+            <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#f5913d;font-weight:600">Alerta gentil</div>
+            <div style="font-weight:700;font-size:16px;line-height:1.3;margin-top:3px">Faltam 20 min de aula. Vamos fechar a bolinha?</div>
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <button style="height:40px;padding:0 16px;border:0;border-radius:12px;background:#ffd60a;color:#14102b;font-family:'Barlow Condensed';font-weight:800;font-size:16px;text-transform:uppercase;box-shadow:0 4px 0 #b39500;cursor:pointer" style-active="transform:translateY(3px);box-shadow:0 1px 0 #b39500">Fechar agora</button>
+              <button style="height:40px;padding:0 14px;border:1.5px solid #3a3260;border-radius:12px;background:transparent;color:#b8b2d6;font-family:'Barlow Condensed';font-weight:700;font-size:16px;text-transform:uppercase;cursor:pointer">Depois</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 QUIZ -->
+    <div style="display:flex;flex-direction:column;gap:10px" data-screen-label="03 Quiz">
+      <div style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#8b83b0">03 · atividade em aula — quiz</div>
+      <div style="width:390px;height:844px;background:#14102b;border-radius:44px;overflow:hidden;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.6);border:1px solid #2a2350">
+        <div style="position:absolute;top:200px;right:-60px;width:220px;height:140px;border:2px solid #ffd60a;opacity:.08;transform:rotate(-15deg)"></div>
+        <div style="position:absolute;bottom:60px;left:-40px;width:160px;height:160px;border:2px solid #3dd6f5;opacity:.08;border-radius:12px;transform:rotate(20deg)"></div>
+        <div style="display:flex;justify-content:space-between;padding:18px 28px 0;font-size:14px;font-weight:600"><span>9:41</span><span style="width:16px;height:9px;border:1.5px solid #f4f1ff;border-radius:2px;display:inline-block"></span></div>
+        <div style="position:relative;padding:16px 24px 0;display:flex;flex-direction:column;gap:14px;height:calc(100% - 40px);box-sizing:border-box">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="display:flex;align-items:center;gap:8px;background:#1f1a3d;border:1px solid #302868;border-radius:999px;padding:6px 12px 6px 8px">
+              <span style="width:8px;height:8px;border-radius:50%;background:#3dd6f5;animation:maPulse 1.2s infinite"></span>
+              <span style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#3dd6f5;font-weight:600">modo foco ativo · notificações silenciadas</span>
+            </div>
+            <div style="font-family:'Barlow Condensed';font-weight:800;font-size:26px;color:#ffd60a;font-variant-numeric:tabular-nums">{{ timer }}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <sc-if value="{{ showMascot }}" hint-placeholder-val="{{ true }}">
+<svg width="56" height="52" viewBox="0 0 120 110" aria-label="Tatú em modo foco">
+<ellipse cx="60" cy="102" rx="42" ry="5" fill="#000" opacity=".3"></ellipse>
+<path d="M22 84 Q12 90 18 98" stroke="#4a4166" stroke-width="5" stroke-linecap="round" fill="none"></path>
+<circle cx="60" cy="58" r="40" fill="#ffd60a"></circle>
+<path d="M36 30 C29 48 29 70 37 88" stroke="#f5913d" stroke-width="5" stroke-linecap="round" fill="none"></path>
+<path d="M60 18 C58 40 58 78 60 98" stroke="#f5913d" stroke-width="5" stroke-linecap="round" fill="none"></path>
+<path d="M84 30 C91 48 91 70 83 88" stroke="#f5913d" stroke-width="5" stroke-linecap="round" fill="none"></path>
+<ellipse cx="70" cy="88" rx="22" ry="11" fill="#4a4166"></ellipse>
+<ellipse cx="90" cy="92" rx="7" ry="4.5" fill="#4a4166"></ellipse><circle cx="95" cy="92" r="1.8" fill="#14102b"></circle>
+<path d="M60 86 Q64 89 68 86" stroke="#14102b" stroke-width="2" fill="none" stroke-linecap="round"></path><path d="M74 86 Q78 89 82 86" stroke="#14102b" stroke-width="2" fill="none" stroke-linecap="round"></path>
+</svg>
+            </sc-if>
+            <div style="font-size:13px;color:#b8b2d6;font-style:italic">Tatú se fechou. Foco total.</div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#b8b2d6;margin-bottom:8px"><span style="white-space:nowrap">Quiz de História</span><span style="color:#ffd60a;font-weight:700;white-space:nowrap">Pergunta {{ qNum }} de 5</span></div>
+            <div style="display:flex;gap:6px">
+              <sc-for list="{{ qSegs }}" as="s" hint-placeholder-count="5"><div style="flex:1;height:8px;border-radius:4px;background:{{ s.bg }};transition:background .3s"></div></sc-for>
+            </div>
+          </div>
+          <div style="font-family:'Barlow Condensed';font-weight:700;font-size:30px;line-height:1.05;text-wrap:pretty;min-height:96px">{{ qText }}</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ qOpts }}" as="o" hint-placeholder-count="4">
+              <button onClick="{{ o.pick }}" style="display:flex;align-items:center;gap:14px;min-height:64px;padding:12px 16px;text-align:left;border-radius:18px;border:2px solid {{ o.border }};background:{{ o.bg }};color:#f4f1ff;font-family:Barlow;font-size:16px;font-weight:600;cursor:pointer;box-shadow:0 5px 0 {{ o.shadow }};transition:all .15s" style-active="transform:translateY(4px);box-shadow:0 1px 0 #0a0818">
+                <span style="flex:none;width:34px;height:34px;border-radius:10px;background:{{ o.letterBg }};color:{{ o.letterColor }};display:grid;place-items:center;font-family:'Barlow Condensed';font-weight:800;font-size:18px">{{ o.letter }}</span>
+                <span style="flex:1">{{ o.text }}</span>
+              </button>
+            </sc-for>
+          </div>
+          <div style="margin-top:auto;padding-bottom:40px;display:flex;flex-direction:column;gap:12px">
+            <div style="min-height:56px;border-radius:16px;padding:12px 16px;display:flex;align-items:center;gap:12px;background:{{ fbBg }};border:1.5px solid {{ fbBorder }};color:{{ fbColor }};font-weight:700;font-size:15px;transition:all .25s;box-sizing:border-box">{{ fbText }}</div>
+            <sc-if value="{{ answered }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ nextQ }}" style="height:56px;border:0;border-radius:16px;background:#ffd60a;color:#14102b;font-family:'Barlow Condensed';font-weight:800;font-size:20px;letter-spacing:.04em;text-transform:uppercase;box-shadow:0 5px 0 #b39500;cursor:pointer" style-active="transform:translateY(4px);box-shadow:0 1px 0 #b39500">{{ nextLabel }}</button>
+            </sc-if>
+          </div>
+        </div>
+        {{ confettiQuiz }}
+      </div>
+    </div>
+
+    <!-- 4 LOJA -->
+    <div style="display:flex;flex-direction:column;gap:10px" data-screen-label="04 Loja">
+      <div style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#8b83b0">04 · loja de recompensas</div>
+      <div style="width:390px;height:844px;background:#14102b;border-radius:44px;overflow:hidden;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.6);border:1px solid #2a2350">
+        <div style="position:absolute;top:40px;right:-30px;width:160px;height:160px;border:2px solid #ffd60a;opacity:.1;border-radius:50%"></div>
+        <div style="position:absolute;top:400px;left:-50px;width:140px;height:240px;border:2px solid #ffd60a;opacity:.08;transform:rotate(14deg)"></div>
+        <div style="display:flex;justify-content:space-between;padding:18px 28px 0;font-size:14px;font-weight:600"><span>9:41</span><span style="width:16px;height:9px;border:1.5px solid #f4f1ff;border-radius:2px;display:inline-block"></span></div>
+        <div style="position:relative;padding:20px 24px 0;display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;align-items:flex-end;justify-content:space-between">
+            <div><div style="font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#3dd6f5;letter-spacing:.08em">SEU SALDO</div><div style="display:flex;align-items:baseline;gap:8px;margin-top:4px"><span style="font-family:'Barlow Condensed';font-weight:800;font-size:52px;line-height:1;color:#ffd60a">{{ balance }}</span><span style="font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:#b8b2d6">créditos<br>de foco</span></div></div>
+            <div style="width:56px;height:56px;border-radius:16px;background:#ffd60a;display:grid;place-items:center;box-shadow:0 5px 0 #b39500"><div style="width:26px;height:26px;border-radius:50%;border:5px solid #14102b"></div></div>
+          </div>
+          <div style="background:#1f1a3d;border:1px solid #302868;border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#3dd6f5;font-weight:600">Meta coletiva · 3B</div><div style="font-family:'Barlow Condensed';font-weight:700;font-size:24px;margin-top:2px">Aula ao ar livre</div></div><div style="font-family:'Barlow Condensed';font-weight:800;font-size:30px;color:#ffd60a">{{ goalPct }}%</div></div>
+            <div style="height:14px;border-radius:7px;background:#14102b;overflow:hidden;border:1px solid #302868"><div style="height:100%;width:{{ goalPct }}%;border-radius:7px;background:linear-gradient(90deg,#f5913d,#ffd60a);transition:width .6s"></div></div>
+            <div style="font-size:13px;color:#b8b2d6">Faltam <b style="color:#f4f1ff">{{ goalLeft }}%</b> — cada resgate de foco da turma conta.</div>
+          </div>
+          <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#b8b2d6;font-weight:600;white-space:nowrap">Recompensas da escola</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <sc-for list="{{ rewards }}" as="r" hint-placeholder-count="5">
+              <div style="background:#1f1a3d;border:1px solid #302868;border-radius:20px;padding:14px;display:flex;flex-direction:column;gap:10px;min-height:140px;box-sizing:border-box">
+                <div style="width:40px;height:40px;border-radius:12px;background:{{ r.color }};display:grid;place-items:center">{{ r.icon }}</div>
+                <div style="font-weight:700;font-size:15px;line-height:1.2;flex:1">{{ r.name }}</div>
+                <button onClick="{{ r.redeem }}" style="height:40px;border:0;border-radius:12px;background:{{ r.btnBg }};color:{{ r.btnColor }};font-family:'Barlow Condensed';font-weight:800;font-size:16px;letter-spacing:.03em;text-transform:uppercase;box-shadow:0 4px 0 {{ r.btnShadow }};cursor:pointer;transition:all .15s" style-active="transform:translateY(3px);box-shadow:0 1px 0 #0a0818">{{ r.btnLabel }}</button>
+              </div>
+            </sc-for>
+          </div>
+          <sc-if value="{{ storeToast }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;align-items:center;gap:12px;background:#ffd60a;color:#14102b;border-radius:16px;padding:12px 14px;font-weight:700;font-size:14px;box-shadow:0 5px 0 #b39500">
+              <sc-if value="{{ showMascot }}" hint-placeholder-val="{{ true }}">
+<svg width="48" height="44" viewBox="0 0 120 110" aria-label="Tatú celebrando">
+<ellipse cx="60" cy="104" rx="36" ry="4" fill="#000" opacity=".3"></ellipse>
+<rect x="42" y="84" width="12" height="18" rx="5" fill="#4a4166"></rect><rect x="66" y="84" width="12" height="18" rx="5" fill="#4a4166"></rect>
+<path d="M26 76 C26 40 42 30 60 30 C78 30 94 40 94 76 Z" fill="#ffd60a"></path>
+<path d="M42 34 C39 48 38 62 38 76" stroke="#f5913d" stroke-width="5" stroke-linecap="round" fill="none"></path><path d="M78 34 C81 48 82 62 82 76" stroke="#f5913d" stroke-width="5" stroke-linecap="round" fill="none"></path>
+<rect x="26" y="73" width="68" height="6" rx="3" fill="#f5913d"></rect>
+<ellipse cx="60" cy="70" rx="22" ry="22" fill="#4a4166"></ellipse><ellipse cx="60" cy="76" rx="12" ry="12" fill="#5f5680"></ellipse>
+<path d="M40 60 L20 34" stroke="#4a4166" stroke-width="6" stroke-linecap="round"></path><circle cx="19" cy="32" r="5" fill="#4a4166"></circle>
+<path d="M80 60 L100 34" stroke="#4a4166" stroke-width="6" stroke-linecap="round"></path><circle cx="101" cy="32" r="5" fill="#4a4166"></circle>
+<circle cx="60" cy="36" r="15" fill="#4a4166"></circle>
+<ellipse cx="50" cy="22" rx="3.5" ry="7" fill="#4a4166" transform="rotate(-15 50 22)"></ellipse><ellipse cx="70" cy="22" rx="3.5" ry="7" fill="#4a4166" transform="rotate(15 70 22)"></ellipse>
+<circle cx="54" cy="34" r="3.5" fill="#fff"></circle><circle cx="66" cy="34" r="3.5" fill="#fff"></circle><circle cx="55" cy="34.5" r="1.8" fill="#14102b"></circle><circle cx="67" cy="34.5" r="1.8" fill="#14102b"></circle>
+<ellipse cx="60" cy="43" rx="4.5" ry="3.5" fill="#14102b"></ellipse>
+</svg>
+              </sc-if>
+              <span>{{ storeToast }}</span>
+            </div>
+          </sc-if>
+        </div>
+        {{ confettiStore }}
+      </div>
+    </div>
+
+    <!-- 5 PROFESSOR -->
+    <div style="display:flex;flex-direction:column;gap:10px" data-screen-label="05 Professor">
+      <div style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#8b83b0">05 · painel do professor</div>
+      <div style="width:390px;height:844px;background:#14102b;border-radius:44px;overflow:hidden;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.6);border:1px solid #2a2350">
+        <div style="position:absolute;top:60px;left:-40px;width:180px;height:120px;border:2px solid #ffd60a;opacity:.1;transform:rotate(-10deg)"></div>
+        <div style="position:absolute;bottom:120px;right:-50px;width:170px;height:170px;border:2px solid #3dd6f5;opacity:.08;border-radius:50%"></div>
+        <div style="display:flex;justify-content:space-between;padding:18px 28px 0;font-size:14px;font-weight:600"><span>9:41</span><span style="width:16px;height:9px;border:1.5px solid #f4f1ff;border-radius:2px;display:inline-block"></span></div>
+        <div style="position:relative;padding:14px 24px 0;display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:48px;height:48px;border-radius:14px;background:#f5913d;color:#14102b;display:grid;place-items:center;font-family:'Barlow Condensed';font-weight:800;font-size:20px">MA</div>
+            <div style="flex:1"><div style="font-weight:700;font-size:18px">Prof. Marcos</div><div style="font-size:13px;color:#b8b2d6">História · Turma 3B · 4ª aula</div></div>
+            <div style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:{{ liveColor }};border:1px solid {{ liveColor }};padding:4px 8px;border-radius:4px">{{ liveTag }}</div>
+          </div>
+          <button onClick="{{ toggleLive }}" style="height:56px;border:0;border-radius:18px;background:{{ liveBtnBg }};color:{{ liveBtnColor }};font-family:'Barlow Condensed';font-weight:800;font-size:22px;letter-spacing:.04em;text-transform:uppercase;box-shadow:0 6px 0 {{ liveBtnShadow }};cursor:pointer;transition:all .15s" style-active="transform:translateY(5px);box-shadow:0 1px 0 #0a0818">{{ liveBtnLabel }}</button>
+          <button style="display:flex;align-items:center;gap:12px;padding:10px 14px;border:1.5px solid #3a3260;border-radius:16px;background:#1f1a3d;color:#f4f1ff;text-align:left;cursor:pointer" style-active="transform:translateY(2px)">
+            <span style="flex:none;width:36px;height:36px;border-radius:10px;background:#3dd6f5;display:grid;place-items:center"><span style="width:0;height:0;border-left:11px solid #14102b;border-top:7px solid transparent;border-bottom:7px solid transparent;margin-left:3px"></span></span>
+            <span style="flex:1"><span style="display:block;font-family:'Barlow Condensed';font-weight:700;font-size:17px;text-transform:uppercase;letter-spacing:.03em">Publicar no Foco Feed</span><span style="display:block;font-size:11.5px;color:#8b83b0;margin-top:1px">vídeos de 30–90s · curadoria da equipe da escola</span></span>
+            <span style="color:#8b83b0;font-size:18px">›</span>
+          </button>
+          <div style="background:#1f1a3d;border:1px solid #302868;border-radius:20px;padding:12px 14px;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#b8b2d6;font-weight:600;white-space:nowrap">Conectados agora</div><div style="font-family:'Barlow Condensed';font-weight:800;font-size:22px;color:#3dd6f5">{{ connected }}<span style="color:#8b83b0;font-size:16px">/32</span></div></div>
+            <div style="display:grid;grid-template-columns:repeat(11,1fr);gap:5px">
+              <sc-for list="{{ students }}" as="st" hint-placeholder-count="32"><div style="aspect-ratio:1;border-radius:50%;background:{{ st.bg }};color:#14102b;display:grid;place-items:center;font-family:'Barlow Condensed';font-weight:700;font-size:9px;opacity:{{ st.op }};border:2px solid {{ st.ring }}">{{ st.i }}</div></sc-for>
+            </div>
+          </div>
+          <div style="background:#1f1a3d;border:1px solid #302868;border-radius:20px;padding:12px 14px;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#b8b2d6;font-weight:600;white-space:nowrap">Acertos por pergunta</div><div style="font-size:12px;color:#8b83b0">média <b style="color:#ffd60a">74%</b></div></div>
+            <div style="display:flex;gap:10px;align-items:flex-end;height:96px">
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end"><span style="font-size:12px;font-weight:700">86%</span><div style="width:100%;height:52px;background:#ffd60a;border-radius:8px 8px 3px 3px"></div><span style="font-size:11px;color:#8b83b0">P1</span></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end"><span style="font-size:12px;font-weight:700">64%</span><div style="width:100%;height:39px;background:#f5913d;border-radius:8px 8px 3px 3px"></div><span style="font-size:11px;color:#8b83b0">P2</span></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end"><span style="font-size:12px;font-weight:700">91%</span><div style="width:100%;height:56px;background:#ffd60a;border-radius:8px 8px 3px 3px"></div><span style="font-size:11px;color:#8b83b0">P3</span></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end"><span style="font-size:12px;font-weight:700">72%</span><div style="width:100%;height:44px;background:#ffd60a;border-radius:8px 8px 3px 3px"></div><span style="font-size:11px;color:#8b83b0">P4</span></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end"><span style="font-size:12px;font-weight:700;color:#e8455a">58%</span><div style="width:100%;height:36px;background:#e8455a;border-radius:8px 8px 3px 3px"></div><span style="font-size:11px;color:#8b83b0">P5</span></div>
+            </div>
+            <div style="font-size:12px;color:#b8b2d6;border-top:1px solid #302868;padding-top:8px">P5 teve menos acertos — vale retomar “Golpe de 18 de Brumário”.</div>
+          </div>
+          <div style="background:#1f1a3d;border:1px solid #302868;border-radius:20px;padding:12px 14px;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#b8b2d6;font-weight:600;white-space:nowrap">Bem-estar da turma</div><div style="font-family:ui-monospace,Menlo,monospace;font-size:10px;color:#3dd6f5;white-space:nowrap">anônimo · agregado</div></div>
+            <div style="display:flex;gap:8px">
+              <div style="flex:1;background:#14102b;border-radius:14px;padding:6px 6px;display:flex;flex-direction:column;align-items:center;gap:0"><span style="font-size:20px">😄</span><span style="font-family:'Barlow Condensed';font-weight:800;font-size:18px">12</span></div>
+              <div style="flex:1;background:#14102b;border-radius:14px;padding:6px 6px;display:flex;flex-direction:column;align-items:center;gap:0"><span style="font-size:20px">🙂</span><span style="font-family:'Barlow Condensed';font-weight:800;font-size:18px">9</span></div>
+              <div style="flex:1;background:#14102b;border-radius:14px;padding:6px 6px;display:flex;flex-direction:column;align-items:center;gap:0"><span style="font-size:20px">😐</span><span style="font-family:'Barlow Condensed';font-weight:800;font-size:18px">5</span></div>
+              <div style="flex:1;background:#14102b;border-radius:14px;padding:6px 6px;display:flex;flex-direction:column;align-items:center;gap:0"><span style="font-size:20px">😴</span><span style="font-family:'Barlow Condensed';font-weight:800;font-size:18px;color:#f5913d">2</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 07 · Foco Feed — player -->
+    <div style="display:flex;flex-direction:column;gap:10px" data-screen-label="07 Foco Feed">
+      <div style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#8b83b0">07 · foco feed — player</div>
+      <div style="width:390px;height:844px;background:#14102b;border-radius:44px;overflow:hidden;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.6);border:1px solid #2a2350">
+
+        <div style="position:absolute;inset:0;background:#2b2452">
+          <image-slot id="feed-frame" shape="rect" fit="cover" src="./assets/feed-frame-crop.png" placeholder="frame do vídeo 9:16"></image-slot>
+        </div>
+        
+        <div style="position:absolute;left:0;right:0;bottom:0;height:420px;background:linear-gradient(180deg,transparent,rgba(20,16,43,.95));pointer-events:none"><div style="position: absolute; left: -1px; top: -54px; pointer-events: none; display: flex; flex-direction: column; gap: 6px; align-items: flex-start">
+          <span style="display:inline-block;background:#14102b;color:#f4f1ff;font-family:'Barlow Condensed';font-weight:800;font-size:24px;line-height:1.1;padding:4px 10px;text-transform:uppercase;letter-spacing:.01em">a Bastilha era mais</span>
+          <span style="display:inline-block;background:#ffd60a;color:#14102b;font-family:'Barlow Condensed';font-weight:800;font-size:30px;line-height:1.1;padding:4px 10px;text-transform:uppercase;letter-spacing:.01em">SÍMBOLO</span>
+          <span style="display:inline-block;background:#14102b;color:#f4f1ff;font-family:'Barlow Condensed';font-weight:800;font-size:24px;line-height:1.1;padding:4px 10px;text-transform:uppercase;letter-spacing:.01em">do que prisão</span>
+        </div></div>
+        <div style="position:absolute;left:0;right:0;top:0;height:160px;background:linear-gradient(180deg,rgba(20,16,43,.9),transparent);pointer-events:none"></div>
+        <div style="position:relative;display:flex;justify-content:space-between;padding:18px 28px 0;font-size:14px;font-weight:600"><span>9:41</span><span style="width:16px;height:9px;border:1.5px solid #f4f1ff;border-radius:2px;display:inline-block"></span></div>
+        <div style="position:relative;padding:18px 24px 0;display:flex;align-items:center;justify-content:space-between">
+          <div style="display:flex;align-items:center;gap:8px;background:#ffd60a;color:#14102b;border-radius:10px;padding:6px 10px;font-family:'Barlow Condensed';font-weight:800;font-size:15px;letter-spacing:.06em;box-shadow:0 3px 0 #b39500"><span style="width:0;height:0;border-left:9px solid #14102b;border-top:5px solid transparent;border-bottom:5px solid transparent"></span>FOCO FEED</div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+            <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#f4f1ff;font-weight:600;white-space:nowrap">vídeo <b style="color:#ffd60a">3</b> de 5 hoje</div>
+            <div style="display:flex;gap:6px"><span style="width:12px;height:12px;border-radius:50%;background:#ffd60a"></span><span style="width:12px;height:12px;border-radius:50%;background:#ffd60a"></span><span style="width:12px;height:12px;border-radius:50%;background:#ffd60a"></span><span style="width:12px;height:12px;border-radius:50%;border:2px solid #ffd60a;box-sizing:border-box;opacity:.5"></span><span style="width:12px;height:12px;border-radius:50%;border:2px solid #ffd60a;box-sizing:border-box;opacity:.5"></span></div>
+          </div>
+        </div>
+        <div style="position:absolute;right:20px;bottom:230px;display:flex;flex-direction:column;gap:14px;align-items:center">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:48px;height:48px;border-radius:50%;background:rgba(31,26,61,.85);border:1.5px solid #3a3260;display:grid;place-items:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f4f1ff" stroke-width="2.2" stroke-linejoin="round"><path d="M6 3 L18 3 L18 21 L12 16 L6 21 Z"></path></svg></div><span style="font-size:11px;color:#b8b2d6">salvar</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:48px;height:48px;border-radius:50%;background:rgba(31,26,61,.85);border:1.5px solid #3dd6f5;display:grid;place-items:center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3dd6f5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L9.5 17 L19 7"></path></svg></div><span style="font-size:11px;color:#b8b2d6;white-space:nowrap">entendi</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:48px;height:48px;border-radius:50%;background:rgba(31,26,61,.85);border:1.5px solid #f5913d;display:grid;place-items:center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f5913d" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 9 A3 3 0 1 1 12 12 L12 14"></path><circle cx="12" cy="18.5" r=".9" fill="#f5913d"></circle></svg></div><span style="font-size:11px;color:#b8b2d6;white-space:nowrap">ficou dúvida</span></div>
+          
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:56px;height:56px;border-radius:50%;background:#ffd60a;box-shadow:0 4px 0 #b39500;display:grid;place-items:center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#14102b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 9 A3 3 0 1 1 12 12 L12 14"></path><circle cx="12" cy="18" r=".8" fill="#14102b"></circle><rect x="3" y="3" width="18" height="18" rx="5"></rect></svg></div><span style="font-size:11px;color:#ffd60a;font-weight:700">quiz</span></div>
+          <div style="width:64px;text-align:center;font-size:9.5px;line-height:1.3;color:#8b83b0;font-family:ui-monospace,Menlo,monospace">feedback anônimo · só o prof. vê</div>
+        </div>
+        <div style="position:absolute;left:24px;right:96px;bottom:118px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:inline-flex;align-self:flex-start;align-items:center;gap:6px;background:{{ feedTagBg }};border:1px solid {{ feedTagColor }};color:{{ feedTagText }};border-radius:999px;padding:5px 10px;font-size:11.5px;font-weight:600;letter-spacing:.04em;white-space:nowrap;transition:all .3s">{{ feedTag }}</div>
+          <div style="font-family:'Barlow Condensed';font-weight:800;font-size:28px;line-height:1;text-transform:uppercase">Por que a Bastilha? — 90 segundos</div>
+          <div style="font-size:13px;color:#b8b2d6">Prof. Marcos · História</div>
+        </div>
+        <div style="position:absolute;left:24px;right:24px;bottom:92px;height:6px;border-radius:3px;background:rgba(255,255,255,.18)"><div style="width:{{ feedPct }}%;height:100%;border-radius:3px;background:#ffd60a;transition:width 1s linear"></div><div style="position:absolute;right:0;top:-18px;font-size:11px;color:#b8b2d6;font-variant-numeric:tabular-nums;white-space:nowrap">{{ feedTime }} / 1:30</div></div>
+        {{ confettiFeed }}
+        <div style="position:absolute;left:24px;right:24px;bottom:36px;display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:11.5px;color:#8b83b0;font-family:ui-monospace,Menlo,monospace">sem rolagem infinita · sem métricas sociais</div>
+          <button style="height:40px;padding:0 16px;border:1.5px solid #3a3260;border-radius:12px;background:rgba(31,26,61,.85);color:#f4f1ff;font-family:'Barlow Condensed';font-weight:700;font-size:16px;text-transform:uppercase;letter-spacing:.03em;cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap">próximo <span style="color:#8b83b0;font-weight:600">(2 restantes)</span> <span style="width:0;height:0;border-left:7px solid #ffd60a;border-top:5px solid transparent;border-bottom:5px solid transparent"></span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 08 · Foco Feed — fim do feed -->
+    <div style="display:flex;flex-direction:column;gap:10px" data-screen-label="08 Fim do feed">
+      <div style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#8b83b0">08 · foco feed — fim do feed</div>
+      <div style="width:390px;height:844px;background:#14102b;border-radius:44px;overflow:hidden;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.6);border:1px solid #2a2350">
+
+        <div style="position:absolute;top:120px;left:50%;width:300px;height:300px;margin-left:-150px;border:2px solid #ffd60a;opacity:.14;border-radius:50%"></div>
+        <div style="position:absolute;top:150px;left:50%;width:240px;height:240px;margin-left:-120px;border:2px solid #ffd60a;opacity:.1;transform:rotate(12deg);border-radius:12px"></div>
+        <div style="position:absolute;top:60px;left:34px;font-family:ui-monospace,Menlo,monospace;font-size:70px;color:#ffd60a;opacity:.1;line-height:1">[</div>
+        <div style="position:absolute;top:60px;right:34px;font-family:ui-monospace,Menlo,monospace;font-size:70px;color:#ffd60a;opacity:.1;line-height:1">]</div>
+        <div style="display:flex;justify-content:space-between;padding:18px 28px 0;font-size:14px;font-weight:600"><span>9:41</span><span style="width:16px;height:9px;border:1.5px solid #f4f1ff;border-radius:2px;display:inline-block"></span></div>
+        <div style="position:relative;padding:20px 24px 0;display:flex;flex-direction:column;gap:14px;height:calc(100% - 40px);box-sizing:border-box">
+          <div style="display:flex;justify-content:center"><div style="display:flex;align-items:center;gap:8px;font-family:'Barlow Condensed';font-weight:800;font-size:14px;letter-spacing:.1em;color:#ffd60a;border:1.5px solid #ffd60a;border-radius:10px;padding:5px 10px;white-space:nowrap">FOCO FEED · 5/5</div></div>
+          <sc-if value="{{ showMascot }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;justify-content:center;padding:6px 0 0">
+<svg width="230" height="178" viewBox="0 0 130 100" aria-label="Tatú dando tchau">
+<ellipse cx="66" cy="94" rx="48" ry="5" fill="#000" opacity=".3"></ellipse>
+<path d="M24 74 Q8 80 12 92" stroke="#4a4166" stroke-width="6" stroke-linecap="round" fill="none"></path>
+<rect x="34" y="72" width="12" height="18" rx="5" fill="#4a4166"></rect><rect x="74" y="72" width="12" height="18" rx="5" fill="#4a4166"></rect>
+<ellipse cx="62" cy="66" rx="40" ry="20" fill="#5f5680"></ellipse>
+<path d="M22 70 C22 36 40 24 62 24 C86 24 102 38 102 70 Z" fill="#ffd60a"></path>
+<path d="M44 27 C40 40 38 56 38 70" stroke="#f5913d" stroke-width="5" stroke-linecap="round" fill="none"></path>
+<path d="M62 24 C61 40 60 56 60 70" stroke="#f5913d" stroke-width="5" stroke-linecap="round" fill="none"></path>
+<path d="M80 27 C83 40 84 56 84 70" stroke="#f5913d" stroke-width="5" stroke-linecap="round" fill="none"></path>
+<rect x="22" y="67" width="80" height="6" rx="3" fill="#f5913d"></rect>
+<ellipse cx="106" cy="56" rx="17" ry="13" fill="#4a4166"></ellipse>
+<ellipse cx="122" cy="61" rx="8" ry="5.5" fill="#4a4166"></ellipse><circle cx="128" cy="61" r="2" fill="#14102b"></circle>
+<ellipse cx="98" cy="42" rx="3.5" ry="7" fill="#4a4166" transform="rotate(-15 98 42)"></ellipse><ellipse cx="108" cy="41" rx="3.5" ry="7" fill="#4a4166" transform="rotate(10 108 41)"></ellipse>
+<circle cx="110" cy="54" r="4" fill="#fff"></circle><circle cx="111" cy="54.5" r="2" fill="#14102b"></circle>
+<path d="M105 48 L113 49" stroke="#14102b" stroke-width="1.5" stroke-linecap="round"></path>
+<path d="M116 64 Q119 67 122 65" stroke="#ffd60a" stroke-width="1.5" fill="none" stroke-linecap="round"></path>
+<path d="M92 62 Q88 46 84 34" stroke="#4a4166" stroke-width="6" stroke-linecap="round" fill="none"></path><circle cx="84" cy="32" r="5" fill="#4a4166"></circle>
+</svg>
+            </div>
+          </sc-if>
+          <div style="text-align:center">
+            <div style="font-family:'Barlow Condensed';font-weight:800;font-size:38px;line-height:.95;text-transform:uppercase;text-wrap:balance">Por hoje é isso.<br>Bola pra frente.</div>
+            <div style="font-size:14.5px;color:#b8b2d6;margin-top:10px;line-height:1.4">Você assistiu 5 de 5 vídeos.<br>O feed volta amanhã.</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#2a2160,#1f1a3d);border:1.5px solid #ffd60a;border-radius:20px;padding:14px 16px">
+            <div style="flex:none;width:48px;height:48px;border-radius:14px;background:#ffd60a;display:grid;place-items:center;box-shadow:0 4px 0 #b39500;font-family:'Barlow Condensed';font-weight:800;font-size:20px;color:#14102b">+50</div>
+            <div><div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#ffd60a;font-weight:600">Conquista de hoje</div><div style="font-weight:700;font-size:15px;line-height:1.3;margin-top:2px">+50 pontos Educacional pelo Foco Feed</div></div>
+          </div>
+          <div style="background:#1f1a3d;border:1px solid #302868;border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;align-items:center;gap:10px"><svg width="18" height="20" viewBox="0 0 14 16"><rect x="1" y="7" width="12" height="8" rx="2" fill="none" stroke="#f5913d" stroke-width="1.5"></rect><path d="M4 7 V5 a3 3 0 0 1 6 0 V7" fill="none" stroke="#f5913d" stroke-width="1.5"></path></svg><div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#f5913d;font-weight:600">Desbloqueável</div></div>
+            <div style="font-weight:700;font-size:16px;line-height:1.3">Quer +3 vídeos? Bata sua meta de foco de hoje <span style="color:#ffd60a">(faltam 40 pontos)</span> ou use 100 CR.</div>
+            <div style="height:8px;border-radius:4px;background:#14102b;overflow:hidden"><div style="width:{{ goalDayPct }}%;height:100%;background:#ffd60a;border-radius:4px"></div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <button style="height:48px;border:0;border-radius:14px;background:#ffd60a;color:#14102b;font-family:'Barlow Condensed';font-weight:800;font-size:17px;text-transform:uppercase;letter-spacing:.03em;box-shadow:0 4px 0 #b39500;cursor:pointer" style-active="transform:translateY(3px);box-shadow:0 1px 0 #b39500">Ver minha meta</button>
+              <button style="height:48px;border:1.5px solid #3a3260;border-radius:14px;background:transparent;color:#f4f1ff;font-family:'Barlow Condensed';font-weight:700;font-size:17px;text-transform:uppercase;letter-spacing:.03em;cursor:pointer">Usar 100 CR</button>
+            </div>
+          </div>
+          <div style="margin-top:auto;padding-bottom:36px;text-align:center;font-size:11.5px;color:#8b83b0;font-family:ui-monospace,Menlo,monospace;line-height:1.5">O Foco Feed não tem rolagem infinita.<br>Quando acaba, acabou — de propósito.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6 PAIS -->
+    <div style="display:flex;flex-direction:column;gap:10px" data-screen-label="06 Pais">
+      <div style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#8b83b0">06 · relatório dos pais</div>
+      <div style="width:390px;height:844px;background:#14102b;border-radius:44px;overflow:hidden;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.6);border:1px solid #2a2350">
+        <div style="position:absolute;top:90px;right:-40px;width:150px;height:200px;border:2px solid #ffd60a;opacity:.1;transform:rotate(8deg)"></div>
+        <div style="position:absolute;bottom:100px;left:-30px;width:130px;height:130px;border:2px solid #ffd60a;opacity:.08;border-radius:50%"></div>
+        <div style="display:flex;justify-content:space-between;padding:18px 28px 0;font-size:14px;font-weight:600"><span>9:41</span><span style="width:16px;height:9px;border:1.5px solid #f4f1ff;border-radius:2px;display:inline-block"></span></div>
+        <div style="position:relative;padding:20px 24px 0;display:flex;flex-direction:column;gap:16px">
+          <div>
+            <div style="font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#3dd6f5;letter-spacing:.08em">SEMANA 8 – 12 SET</div>
+            <div style="font-family:'Barlow Condensed';font-weight:800;font-size:34px;line-height:1;text-transform:uppercase;margin-top:6px">A semana da Lívia</div>
+            <div style="font-size:13px;color:#b8b2d6;margin-top:6px">Um retrato de categorias de uso — não do que ela vê ou com quem fala.</div>
+          </div>
+          <div style="background:#1f1a3d;border:1px solid #302868;border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#b8b2d6;font-weight:600;white-space:nowrap">Uso por categoria</div><div style="font-size:12px;color:#8b83b0">horário escolar</div></div>
+            <div style="display:flex;gap:8px;align-items:flex-end;height:120px">
+              <sc-for list="{{ week }}" as="d" hint-placeholder-count="5">
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end">
+                  <div style="width:100%;display:flex;flex-direction:column-reverse;border-radius:8px;overflow:hidden;gap:2px">
+                    <div style="height:{{ d.edu }}px;background:#ffd60a"></div><div style="height:{{ d.com }}px;background:#3dd6f5"></div><div style="height:{{ d.ent }}px;background:#f5913d"></div><div style="height:{{ d.neu }}px;background:#8b83b0"></div>
+                  </div>
+                  <span style="font-size:11px;color:#8b83b0">{{ d.label }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;font-size:12px;color:#b8b2d6">
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:#ffd60a"></span>Educacional</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:#3dd6f5"></span>Comunicação</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:#f5913d"></span>Entretenimento</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:#8b83b0"></span>Neutro</div>
+            </div>
+          </div>
+          <div style="background:#1f1a3d;border:1px solid #302868;border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#b8b2d6;font-weight:600;white-space:nowrap">Em relação à turma</div><div style="font-family:ui-monospace,Menlo,monospace;font-size:10px;color:#3dd6f5">média anônima</div></div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span>Educacional</span><span><b style="color:#ffd60a">4h20</b> <span style="color:#8b83b0">· turma 3h50</span></span></div>
+              <div style="height:8px;border-radius:4px;background:#14102b;overflow:hidden"><div style="width:78%;height:100%;background:#ffd60a;border-radius:4px"></div></div>
+              <div style="height:4px;border-radius:2px;background:#14102b;overflow:hidden"><div style="width:69%;height:100%;background:#8b83b0;border-radius:2px"></div></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span>Entretenimento</span><span><b style="color:#f5913d">2h05</b> <span style="color:#8b83b0">· turma 1h40</span></span></div>
+              <div style="height:8px;border-radius:4px;background:#14102b;overflow:hidden"><div style="width:52%;height:100%;background:#f5913d;border-radius:4px"></div></div>
+              <div style="height:4px;border-radius:2px;background:#14102b;overflow:hidden"><div style="width:42%;height:100%;background:#8b83b0;border-radius:2px"></div></div>
+            </div>
+            <div style="font-size:12px;color:#b8b2d6">Foco em alta esta semana: 5 dias de streak mantidos.</div>
+          </div>
+          <div style="background:linear-gradient(135deg,#2a2160,#1f1a3d);border:1.5px solid #ffd60a;border-radius:20px;padding:16px;display:flex;gap:14px;align-items:flex-start">
+            <sc-if value="{{ showMascot }}" hint-placeholder-val="{{ true }}">
+<svg width="66" height="50" viewBox="0 0 130 100" aria-label="Tatú apontando">
+<ellipse cx="66" cy="94" rx="48" ry="5" fill="#000" opacity=".3"></ellipse>
+<path d="M24 74 Q8 80 12 92" stroke="#4a4166" stroke-width="6" stroke-linecap="round" fill="none"></path>
+<rect x="34" y="72" width="12" height="18" rx="5" fill="#4a4166"></rect><rect x="74" y="72" width="12" height="18" rx="5" fill="#4a4166"></rect>
+<ellipse cx="62" cy="66" rx="40" ry="20" fill="#5f5680"></ellipse>
+<path d="M22 70 C22 36 40 24 62 24 C86 24 102 38 102 70 Z" fill="#ffd60a"></path>
+<path d="M44 27 C40 40 38 56 38 70" stroke="#f5913d" stroke-width="5" stroke-linecap="round" fill="none"></path>
+<path d="M62 24 C61 40 60 56 60 70" stroke="#f5913d" stroke-width="5" stroke-linecap="round" fill="none"></path>
+<path d="M80 27 C83 40 84 56 84 70" stroke="#f5913d" stroke-width="5" stroke-linecap="round" fill="none"></path>
+<rect x="22" y="67" width="80" height="6" rx="3" fill="#f5913d"></rect>
+<ellipse cx="106" cy="56" rx="17" ry="13" fill="#4a4166"></ellipse>
+<ellipse cx="122" cy="61" rx="8" ry="5.5" fill="#4a4166"></ellipse><circle cx="128" cy="61" r="2" fill="#14102b"></circle>
+<ellipse cx="98" cy="42" rx="3.5" ry="7" fill="#4a4166" transform="rotate(-15 98 42)"></ellipse><ellipse cx="108" cy="41" rx="3.5" ry="7" fill="#4a4166" transform="rotate(10 108 41)"></ellipse>
+<circle cx="110" cy="54" r="4" fill="#fff"></circle><circle cx="111" cy="54.5" r="2" fill="#14102b"></circle>
+<path d="M105 48 L113 49" stroke="#14102b" stroke-width="1.5" stroke-linecap="round"></path>
+<path d="M116 64 Q119 67 122 65" stroke="#ffd60a" stroke-width="1.5" fill="none" stroke-linecap="round"></path>
+<path d="M92 66 L124 80" stroke="#4a4166" stroke-width="6" stroke-linecap="round" fill="none"></path><circle cx="125" cy="81" r="4.5" fill="#4a4166"></circle>
+</svg>
+            </sc-if>
+            <div style="flex:1">
+              <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#ffd60a;font-weight:600">Sugestão de conversa da semana</div>
+              <div style="font-weight:700;font-size:16px;line-height:1.3;margin-top:4px">“O que foi mais legal no Quiz de História?”</div>
+              <div style="font-size:12.5px;color:#b8b2d6;margin-top:6px;line-height:1.4">A turma usou o celular em aula 3 vezes esta semana. Perguntar pelo conteúdo, e não pelo tempo, costuma abrir a conversa.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showMascot&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Mascote&quot;},&quot;streakDays&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:7,&quot;min&quot;:0,&quot;max&quot;:365,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Dados&quot;},&quot;goalPct&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:88,&quot;min&quot;:0,&quot;max&quot;:100,&quot;step&quot;:1,&quot;unit&quot;:&quot;%&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Dados&quot;}}">
+class Component extends DCLogic {
+  state = { signed: false, q: 0, sel: null, secs: 0, balance: 1240, redeemed: {}, live: false, confetti: null, toast: null, correct: 0 };
+  questions = [
+    { t: 'Qual evento marcou o início da Revolução Francesa, em 1789?', o: ['Queda da Bastilha', 'Execução de Luís XVI', 'Congresso de Viena', 'Golpe de 18 de Brumário'], c: 0 },
+    { t: 'Que documento afirmou que “os homens nascem e permanecem livres e iguais em direitos”?', o: ['Carta Magna', 'Declaração dos Direitos do Homem e do Cidadão', 'Código Napoleônico', 'Constituição de 1791'], c: 1 },
+    { t: 'Quem liderou o período conhecido como o Terror?', o: ['Danton', 'Marat', 'Robespierre', 'Napoleão'], c: 2 },
+    { t: 'Qual grupo social formava o Terceiro Estado?', o: ['Clero', 'Nobreza', 'Realeza', 'Burguesia e povo'], c: 3 },
+    { t: 'O golpe de 18 de Brumário (1799) levou ao poder…', o: ['Napoleão Bonaparte', 'Luís XVIII', 'Lafayette', 'Sieyès'], c: 0 },
+  ];
+  componentDidMount() { this.t = setInterval(() => this.setState(s => { if (s.secs + 1 === 90) this.pop('feed'); return { secs: s.secs + 1 }; }), 1000); }
+  componentWillUnmount() { clearInterval(this.t); clearTimeout(this.ct); clearTimeout(this.tt); }
+  pop(where) {
+    this.setState({ confetti: where });
+    clearTimeout(this.ct);
+    this.ct = setTimeout(() => this.setState({ confetti: null }), 2400);
+  }
+  confetti(where) {
+    if (this.state.confetti !== where) return null;
+    const cols = ['#ffd60a', '#3dd6f5', '#f5913d', '#e8455a', '#f4f1ff'];
+    const pieces = Array.from({ length: 46 }, (_, i) => React.createElement('div', {
+      key: i, style: { position: 'absolute', top: 0, left: (i * 37 % 100) + '%', width: i % 3 ? 8 : 12, height: i % 2 ? 8 : 14, borderRadius: i % 4 ? 2 : '50%',
+        background: cols[i % 5], animation: `maFall ${1.6 + (i % 5) * .2}s ${(i % 7) * .08}s ease-in forwards`, opacity: 0 }
+    }));
+    return React.createElement('div', { key: where + this.state.secs, style: { position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' } }, pieces);
+  }
+  renderVals() {
+    const s = this.state, p = this.props;
+    const showMascot = p.showMascot ?? true;
+    const streakDays = p.streakDays ?? 7;
+    const goalPct = p.goalPct ?? 88;
+    const points = 240 + s.correct * 20;
+    const q = this.questions[s.q];
+    const answered = s.sel !== null;
+    const rem = Math.max(0, 600 - s.secs);
+    const fmt = (t, padMin) => String(Math.floor(t / 60)).padStart(padMin ? 2 : 1, '0') + ':' + String(t % 60).padStart(2, '0');
+    const timer = fmt(rem, true);
+    const feedSecs = Math.min(90, s.secs), feedDone = feedSecs >= 90;
+    const isRight = answered && s.sel === q.c;
+    const qOpts = q.o.map((text, i) => {
+      let border = '#3a3260', bg = '#1f1a3d', shadow = '#0f0c22', letterBg = '#2e2757', letterColor = '#f4f1ff';
+      if (answered && i === q.c) { border = '#ffd60a'; bg = 'rgba(255,214,10,.14)'; shadow = '#b39500'; letterBg = '#ffd60a'; letterColor = '#14102b'; }
+      else if (answered && i === s.sel) { border = '#e8455a'; bg = 'rgba(232,69,90,.14)'; shadow = '#8a1f2e'; letterBg = '#e8455a'; letterColor = '#14102b'; }
+      return { text, letter: 'ABCD'[i], border, bg, shadow, letterBg, letterColor,
+        pick: () => { if (answered) return; const right = i === q.c; this.setState(st => ({ sel: i, correct: st.correct + (right ? 1 : 0) })); if (right) this.pop('quiz'); } };
+    });
+    const rewardsData = [
+      { id: 'pp', name: 'Ponto de participação', cost: 150, color: '#ffd60a', iconRadius: '50%' },
+      { id: 'vl', name: 'Vale-lanche na cantina', cost: 400, color: '#f5913d', iconRadius: '3px' },
+      { id: 'tm', name: 'Escolher tema do trabalho', cost: 300, color: '#3dd6f5', iconRadius: '3px 12px' },
+      { id: 'lg', name: 'Sentar onde quiser (1 dia)', cost: 200, color: '#8b83b0', iconRadius: '12px 3px' },
+      { id: 'ff', name: '+3 vídeos no Foco Feed', cost: 100, color: '#ffd60a', iconRadius: '3px' },
+    ];
+    const I = (d) => React.createElement('svg', { width: 22, height: 22, viewBox: '0 0 24 24', fill: 'none', stroke: '#14102b', strokeWidth: 2.2, strokeLinecap: 'round', strokeLinejoin: 'round' }, d.map((p, k) => React.createElement('path', { key: k, d: p })));
+    const icons = {
+      pp: I(['M12 3 L14.6 8.4 L20.5 9.2 L16.2 13.3 L17.3 19.2 L12 16.4 L6.7 19.2 L7.8 13.3 L3.5 9.2 L9.4 8.4 Z']),
+      vl: I(['M4 11 L20 11', 'M5 11 C5 7 8 5 12 5 C16 5 19 7 19 11', 'M4 14 L20 14 L19 19 L5 19 Z', 'M7 11 L8 14', 'M12 11 L12 14', 'M17 11 L16 14']),
+      tm: I(['M4 20 L8 19 L19 8 L16 5 L5 16 Z', 'M14 7 L17 10', 'M4 20 L5 16']),
+      lg: I(['M6 11 L6 4 L16 4 L16 11', 'M4 11 L18 11 L18 15 L4 15 Z', 'M6 15 L6 20', 'M16 15 L16 20']),
+      ff: I(['M8 5 L19 12 L8 19 Z']),
+    };
+    const rewards = rewardsData.map(r => {
+      const done = !!s.redeemed[r.id], can = s.balance >= r.cost;
+      return { ...r, icon: icons[r.id], btnLabel: done ? 'Resgatado ✓' : r.cost + ' cr', btnBg: done ? '#2e2757' : can ? '#ffd60a' : '#2e2757', btnColor: done || !can ? '#8b83b0' : '#14102b', btnShadow: done || !can ? '#0f0c22' : '#b39500',
+        redeem: () => { if (done || !can) return; this.setState(st => ({ balance: st.balance - r.cost, redeemed: { ...st.redeemed, [r.id]: true }, toast: `Tatú comemora! "${r.name}" resgatado.` })); this.pop('store'); clearTimeout(this.tt); this.tt = setTimeout(() => this.setState({ toast: null }), 3000); } };
+    });
+    const cols = ['#3dd6f5', '#f5913d', '#ffd60a', '#e8455a', '#8b83b0'];
+    const inits = ['LV', 'RA', 'JP', 'MC', 'BS', 'TF', 'GA', 'IS', 'PH', 'LM', 'CA', 'DN', 'EV', 'FL', 'GU', 'HL', 'IG', 'JU', 'KA', 'LE', 'MT', 'NI', 'OT', 'PA', 'RE', 'SO', 'TH', 'VI', 'YA', 'ZE', 'AN', 'BE'];
+    const connected = s.live ? 28 : 21;
+    const students = inits.map((i, k) => ({ i, bg: cols[k % 5], op: k < connected ? 1 : .22, ring: k < connected && s.live ? '#ffd60a' : 'transparent' }));
+    return {
+      showMascot, streakDays, goalPct, goalLeft: 100 - goalPct, points, ringDash: Math.min(528, points / 300 * 528),
+      clock: '09:42',
+      feedPct: feedSecs / 90 * 100, feedTime: fmt(feedSecs), feedTag: feedDone ? 'Concluído · +10 pontos Educacional' : '+10 pontos Educacional ao concluir',
+      feedTagBg: feedDone ? '#ffd60a' : 'rgba(61,214,245,.15)', feedTagColor: feedDone ? '#ffd60a' : '#3dd6f5', feedTagText: feedDone ? '#14102b' : '#3dd6f5',
+      confettiFeed: this.confetti('feed'),
+      goalDayPct: Math.round(Math.min(100, points / 300 * 100)),
+      signed: s.signed, signedCount: s.signed ? 28 : 27, signLabel: s.signed ? 'Pacto assinado ✓' : 'Assinar pacto da turma 3B',
+      signBg: s.signed ? '#3dd6f5' : '#ffd60a', signShadow: s.signed ? '#1d9db8' : '#b39500',
+      sign: () => { if (!s.signed) { this.setState({ signed: true }); this.pop('pact'); } },
+      confettiPact: this.confetti('pact'), confettiQuiz: this.confetti('quiz'), confettiStore: this.confetti('store'),
+      timer, qNum: s.q + 1, qText: q.t, qOpts, answered,
+      qSegs: [0, 1, 2, 3, 4].map(i => ({ bg: i < s.q ? '#ffd60a' : i === s.q ? (answered ? (isRight ? '#ffd60a' : '#e8455a') : '#3dd6f5') : '#221c45' })),
+      fbText: !answered ? 'Toque em uma alternativa' : isRight ? 'Acertou! +20 créditos de foco' : 'Quase. A resposta certa está em amarelo.',
+      fbBg: !answered ? 'transparent' : isRight ? 'rgba(255,214,10,.14)' : 'rgba(232,69,90,.14)',
+      fbBorder: !answered ? '#302868' : isRight ? '#ffd60a' : '#e8455a',
+      fbColor: !answered ? '#8b83b0' : isRight ? '#ffd60a' : '#ff8a99',
+      nextLabel: s.q === 4 ? 'Ver resultado' : 'Próxima pergunta',
+      nextQ: () => this.setState(st => ({ q: (st.q + 1) % 5, sel: null })),
+      balance: s.balance.toLocaleString('pt-BR'), rewards, storeToast: s.toast,
+      live: s.live, liveTag: s.live ? 'AO VIVO' : 'STANDBY', liveColor: s.live ? '#ffd60a' : '#8b83b0',
+      liveBtnLabel: s.live ? 'Encerrar sessão · Quiz de História' : 'Iniciar sessão de atividade',
+      liveBtnBg: s.live ? '#1f1a3d' : '#ffd60a', liveBtnColor: s.live ? '#ffd60a' : '#14102b', liveBtnShadow: s.live ? '#0f0c22' : '#b39500',
+      toggleLive: () => this.setState(st => ({ live: !st.live })),
+      connected, students,
+      week: [
+        { label: 'Seg', edu: 40, com: 18, ent: 14, neu: 8 }, { label: 'Ter', edu: 52, com: 12, ent: 10, neu: 6 }, { label: 'Qua', edu: 34, com: 20, ent: 22, neu: 10 },
+        { label: 'Qui', edu: 58, com: 10, ent: 8, neu: 6 }, { label: 'Sex', edu: 30, com: 16, ent: 26, neu: 12 },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>
+            <div style="flex:1;display:flex;flex-direction:column;font-size:12.5px"><div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #3a3260"><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="7" fill="#ffd60a"></circle><path d="M4 7.2 L6.2 9.4 L10.2 5" stroke="#14102b" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Educacional</span><b style="margin-left:auto">42%</b></div><div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #3a3260"><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="7" fill="#3dd6f5"></circle><path d="M4 7.2 L6.2 9.4 L10.2 5" stroke="#14102b" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Comunicação</span><b style="margin-left:auto">23%</b></div><div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #3a3260"><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="7" fill="#f5913d"></circle><path d="M4 7.2 L6.2 9.4 L10.2 5" stroke="#14102b" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Entretenimento</span><b style="margin-left:auto">20%</b></div><div style="display:flex;align-items:center;gap:8px;padding:5px 0"><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="7" fill="#8b83b0"></circle><path d="M4 7.2 L6.2 9.4 L10.2 5" stroke="#14102b" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Neutro</span><b style="margin-left:auto">15%</b></div></div>
