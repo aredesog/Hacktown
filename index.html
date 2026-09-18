@@ -7,9 +7,9 @@
 </head>
 <body>
 <x-dc>
-<helmet data-dc-atomics=""><meta name="design_doc_mode" content="canvas"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&amp;family=Barlow:wght@400;500;600;700&amp;display=swap" rel="stylesheet"><script src="./image-slot.js"></script><style>html{background:#0d0a1f}body{margin:0;min-height:100vh;background:#0d0a1f;font-family:Barlow,system-ui,sans-serif;color:#f4f1ff}a{color:#ffd60a}a:hover{color:#fff}@keyframes maFall{0%{transform:translateY(-40px) rotate(0deg);opacity:1}100%{transform:translateY(560px) rotate(720deg);opacity:0}}@keyframes maPulse{0%,100%{opacity:.6}50%{opacity:1}}@keyframes maFlame{0%,100%{transform:scale(1) rotate(-3deg)}50%{transform:scale(1.12) rotate(3deg)}}@keyframes maZ{0%{opacity:0;transform:translate(0,4px)}50%{opacity:1}100%{opacity:0;transform:translate(6px,-8px)}}</style></helmet>
+<helmet data-dc-atomics=""><meta name="design_doc_mode" content="canvas"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&amp;family=Barlow:wght@400;500;600;700&amp;display=swap" rel="stylesheet"><script src="./image-slot.js"></script><style>*{box-sizing:border-box}html{background:#0d0a1f;overflow-x:hidden}body{margin:0;min-height:100vh;background:#0d0a1f;font-family:Barlow,system-ui,sans-serif;color:#f4f1ff;overflow-x:hidden}a{color:#ffd60a}a:hover{color:#fff}@keyframes maFall{0%{transform:translateY(-40px) rotate(0deg);opacity:1}100%{transform:translateY(560px) rotate(720deg);opacity:0}}@keyframes maPulse{0%,100%{opacity:.6}50%{opacity:1}}@keyframes maFlame{0%,100%{transform:scale(1) rotate(-3deg)}50%{transform:scale(1.12) rotate(3deg)}}@keyframes maZ{0%{opacity:0;transform:translate(0,4px)}50%{opacity:1}100%{opacity:0;transform:translate(6px,-8px)}}@media (max-width:768px){.ma-page{padding:24px 16px 40px!important}.ma-screens-row{flex-wrap:nowrap!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;gap:20px!important;margin:0 -16px!important;padding:0 16px 4px!important}.ma-screens-row [data-screen-label]{scroll-snap-align:start;flex:none!important}.ma-log-panel{left:16px!important;right:16px!important;width:auto!important;max-width:none!important;bottom:16px!important}}</style></helmet>
 
-<div style="padding:40px 44px 60px;display:flex;flex-direction:column;gap:28px;background:#0d0a1f;min-height:100vh;box-sizing:border-box">
+<div class="ma-page" style="padding:40px 44px 60px;display:flex;flex-direction:column;gap:28px;background:#0d0a1f;min-height:100vh;box-sizing:border-box">
   <div style="max-width:980px;display:flex;flex-direction:column;gap:12px;font-size:13px;line-height:1.5;color:#b8b2d6">
     <div style="grid-column:1/-1;display:flex;align-items:center;gap:14px"><span style="font-family:'Barlow Condensed';font-weight:800;font-size:38px;letter-spacing:.02em;color:#ffd60a;text-transform:uppercase;white-space:nowrap">Modo Aula</span></div>
     <div><b style="color:#f4f1ff">Não tiramos o celular do aluno — ensinamos o celular a trabalhar para a aula.</b> </div>
@@ -24,7 +24,7 @@ Protótipo funcional — experimente: assine o pacto da turma, responda o quiz (
     </div>
     <div style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#8b83b0">{{ roleSummary }}</div>
   </div>
-  <div style="display:flex;flex-wrap:wrap;gap:36px;align-items:flex-start">
+  <div class="ma-screens-row" style="display:flex;flex-wrap:wrap;gap:36px;align-items:flex-start">
 
     <sc-if value="{{ showAluno }}" hint-placeholder-val="{{ true }}">
     <!-- 1 ONBOARDING -->
@@ -529,7 +529,7 @@ Protótipo funcional — experimente: assine o pacto da turma, responda o quiz (
 
   
 </div>
-<div style="position:fixed;bottom:20px;right:20px;width:320px;z-index:9999;background:#1f1a3d;border:1px solid #3a3260;border-radius:16px;box-shadow:0 16px 44px rgba(0,0,0,.55);overflow:hidden;font-family:Barlow;box-sizing:border-box">
+<div class="ma-log-panel" style="position:fixed;bottom:20px;right:20px;width:320px;z-index:9999;background:#1f1a3d;border:1px solid #3a3260;border-radius:16px;box-shadow:0 16px 44px rgba(0,0,0,.55);overflow:hidden;font-family:Barlow;box-sizing:border-box">
   <div onClick="{{ toggleLog }}" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;cursor:pointer;background:#14102b">
     <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.06em;color:#3dd6f5">O QUE FOI REGISTRADO</span>
     <span style="color:#8b83b0;font-size:12px">{{ logToggleIcon }}</span>
