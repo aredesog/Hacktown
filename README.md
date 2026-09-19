@@ -4,6 +4,7 @@
 ![Hackathon](https://img.shields.io/badge/HACKTUDO%202026-2%C2%BA%20lugar-brightgreen)
 ![Team](https://img.shields.io/badge/time-Nexus-blueviolet)
 ![Made with](https://img.shields.io/badge/feito%20com-HTML%20%7C%20CSS%20%7C%20JS-informational)
+![License](https://img.shields.io/badge/licença-MIT-blue)
 
 **🏆 2º lugar — HACKTUDO 2026**
 
@@ -85,3 +86,7 @@ Curso de Ciência da Computação, UNIFAL-MG (Universidade Federal de Alfenas):
 ## Premiação
 
 Premiação total do hackathon: R$ 16.000 (1º lugar R$ 10.000, 2º lugar R$ 4.000, 3º lugar R$ 2.000).
+
+## Licença
+
+Este projeto está sob a licença MIT — veja o arquivo [LICENSE](LICENSE) para mais detalhes.
