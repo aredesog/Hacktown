@@ -1,0 +1,16 @@
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editores
+*.swp
+*.swo
+.idea/
+
+# Artefatos de sessão da ferramenta de design (thumbnail de preview, uploads temporários de chat)
+.thumbnail
+uploads/
+
+# Logs
+*.log
